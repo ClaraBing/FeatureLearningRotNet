@@ -15,6 +15,7 @@ import errno
 import numpy as np
 import sys
 import csv
+import cv2
 
 from pdb import set_trace as breakpoint
 
@@ -217,11 +218,14 @@ def rotate_img(img, rot):
     if rot == 0: # 0 degrees rotation
         return img
     elif rot == 90: # 90 degrees rotation
-        return np.flipud(np.transpose(img, (1,0,2)))
+        return cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+        # return np.flipud(np.transpose(img, (1,0,2)))
     elif rot == 180: # 90 degrees rotation
-        return np.fliplr(np.flipud(img))
+        return cv2.rotate(img, cv2.ROTATE_180)
+        # return np.fliplr(np.flipud(img))
     elif rot == 270: # 270 degrees rotation / or -90
-        return np.transpose(np.flipud(img), (1,0,2))
+        return cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        # return np.transpose(np.flipud(img), (1,0,2))
     else:
         raise ValueError('rotation should be 0, 90, 180, or 270 degrees')
 

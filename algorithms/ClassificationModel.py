@@ -14,8 +14,7 @@ from tqdm import tqdm
 import time
 
 from . import Algorithm
-from pdb import set_trace as breakpoint
-
+import pdb
 
 def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
@@ -75,8 +74,8 @@ class ClassificationModel(Algorithm):
         #*************** COMPUTE LOSSES *************************
         record = {}
         loss_total = self.criterions['loss'](pred_var, labels_var)
-        record['prec1'] = accuracy(pred_var.data, labels, topk=(1,))[0][0]
-        record['loss'] = loss_total.data[0]
+        record['prec1'] = accuracy(pred_var.data, labels, topk=(1,))[0].item()
+        record['loss'] = loss_total.item()
         #********************************************************
 
         #****** BACKPROPAGATE AND APPLY OPTIMIZATION STEP *******

@@ -1,7 +1,10 @@
 from __future__ import print_function
 import argparse
 import os
+import wandb
+
 import imp
+# import importlib
 import algorithms as alg
 from dataloader import DataLoader, GenericDataset
 
@@ -12,7 +15,23 @@ parser.add_argument('--checkpoint',  type=int,      default=0,     help='checkpo
 parser.add_argument('--num_workers', type=int,      default=4,     help='number of data loading workers')
 parser.add_argument('--cuda'  ,      type=bool,     default=True,  help='enables cuda')
 parser.add_argument('--disp_step',   type=int,      default=50,    help='display step during training')
+# wandb
+parser.add_argument('--project', type=str, default='rot_iclr')
+parser.add_argument('--wb-name', type=str)
+
 args_opt = parser.parse_args()
+
+try:
+  import wandb
+  if args_opt.wb_name != 'default':
+    wandb.init(project=args_opt.project, name=args_opt.wb_name, config=args_opt)
+  else:
+    wandb.init(project=args_opt.project, config=args_opt)
+  USE_WANDB = True
+except Exception as e:
+  print('Exception:', e)
+  print('Not using wandb. \n\n')
+  USE_WANDB = False
 
 exp_config_file = os.path.join('.','config',args_opt.exp+'.py')
 # if args_opt.semi == -1:
